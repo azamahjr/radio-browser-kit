@@ -25,7 +25,7 @@ public class LookUpRadioBrowserServers {
      * Get a list of base URLs of all available radio-browser servers
      * Returns: Array of strings - base URLs of radio-browser servers
      */
-    static func getRadioBrowserBaseURLs() async throws -> [String] {
+    public static func getRadioBrowserBaseURLs() async throws -> [String] {
         let srvRecords = try await resolveSRV(hostname: "_api._tcp.radio-browser.info")
         
         // Sort records (by priority, then by weight)
