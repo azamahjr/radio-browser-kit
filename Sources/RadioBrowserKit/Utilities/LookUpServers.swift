@@ -18,7 +18,7 @@ struct SRVRecord {
 }
 
 // MARK: - Radio Browser API
-class LookUpRadioBrowserServers {
+public class LookUpRadioBrowserServers {
     
     // MARK: - Main Function
     /**
@@ -128,7 +128,7 @@ enum RadioBrowserError: Error, LocalizedError {
     }
 }
 
-public class RadioBrowserClient {
+ class RadioBrowserClient {
     private var baseURLs: [String] = []
     
     func initialize() async throws {
