@@ -128,20 +128,20 @@ enum RadioBrowserError: Error, LocalizedError {
     }
 }
 
- class RadioBrowserClient {
+public class RadioBrowserClient {
     private var baseURLs: [String] = []
     
-    func initialize() async throws {
+    public func initialize() async throws {
         self.baseURLs = try await LookUpRadioBrowserServers.getRadioBrowserBaseURLs()
         print("Discovered Radio Browser servers: \(baseURLs)")
     }
     
-    func getRandomServerURL() -> String? {
+    public func getRandomServerURL() -> String? {
         guard !baseURLs.isEmpty else { return nil }
         return baseURLs.randomElement()
     }
     
-    func searchStations(query: String) async throws -> Data {
+    public func searchStations(query: String) async throws -> Data {
         guard let baseURL = getRandomServerURL() else {
             throw RadioBrowserError.noServersFound
         }
