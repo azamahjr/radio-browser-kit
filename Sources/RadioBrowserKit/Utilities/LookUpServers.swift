@@ -18,14 +18,14 @@ struct SRVRecord {
 }
 
 // MARK: - Radio Browser API
-public class LookUpRadioBrowserServers {
+class LookUpRadioBrowserServers {
     
     // MARK: - Main Function
     /**
      * Get a list of base URLs of all available radio-browser servers
      * Returns: Array of strings - base URLs of radio-browser servers
      */
-    public static func getRadioBrowserBaseURLs() async throws -> [String] {
+    static func getRadioBrowserBaseURLs() async throws -> [String] {
         let srvRecords = try await resolveSRV(hostname: "_api._tcp.radio-browser.info")
         
         // Sort records (by priority, then by weight)
@@ -47,7 +47,7 @@ public class LookUpRadioBrowserServers {
         // Using Cloudflare's DNS-over-HTTPS service
         let urlString = "https://1.1.1.1/dns-query?name=\(hostname)&type=SRV"
         guard let url = URL(string: urlString) else {
-            throw RadioBrowserError.invalidURL
+            throw RadioBrowserError.invalidURL(target: #function)
         }
         
         var request = URLRequest(url: url)
@@ -109,7 +109,7 @@ public class LookUpRadioBrowserServers {
 
 // MARK: - Error Types
 enum RadioBrowserError: Error, LocalizedError {
-    case invalidURL
+    case invalidURL(target: String)
     case networkError
     case invalidDNSResponse
     case noServersFound
@@ -128,10 +128,11 @@ enum RadioBrowserError: Error, LocalizedError {
     }
 }
 
-public class RadioBrowserClient {
+// Example using the
+class RadioBrowserClient {
     private var baseURLs: [String] = []
     
-    public func initialize() async throws {
+    func initialize() async throws {
         self.baseURLs = try await LookUpRadioBrowserServers.getRadioBrowserBaseURLs()
         print("Discovered Radio Browser servers: \(baseURLs)")
     }
@@ -148,7 +149,7 @@ public class RadioBrowserClient {
         
         let searchURL = "\(baseURL)/json/stations/search?name=\(query)"
         guard let url = URL(string: searchURL) else {
-            throw RadioBrowserError.invalidURL
+            throw RadioBrowserError.invalidURL(target: #function)
         }
         
         let (data, _) = try await URLSession.shared.data(from: url)
